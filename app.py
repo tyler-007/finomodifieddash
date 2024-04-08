@@ -13,6 +13,7 @@ def main():
     if uploaded_file is not None:
         # API Key Input
         api_key = st.text_input("Enter your API key")
+        organisation = st.text_input("Enter your Orgs Name")
 
         df = process_csv_file(uploaded_file)
 
@@ -45,8 +46,10 @@ def main():
                 st.image(fig)'''
 
         # Generate Suggestions
+        organisation= ''
+
         st.subheader("AI Suggestions")
-        suggestions = generate_suggestions(api_key, df)
+        suggestions = generate_suggestions(api_key, df, organisation)
         for suggestion in suggestions:
             st.text(suggestion)
 

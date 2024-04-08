@@ -3,9 +3,10 @@ import numpy as np
 import openai
 import matplotlib.pyplot as plt
 
+
 def get_completion(prompt, model="gpt-3.5-turbo",temperature=0): # Andrew mentioned that the prompt/ completion paradigm is preferable for this class
     messages = [
-        {"role": "system", "content": "You are a kind business insight employee with speciality in online media sentiment analysis, you work in India's Largest Payments Bank - Fino Payments Bank"},
+        {"role": "system", "content": "You are a kind business insight employee with speciality in online media sentiment analysis, you work for a  Payments Bank - {organisation}"},
         {"role": "assistant", "content": prompt}
     ]    
     response = openai.ChatCompletion.create(
@@ -29,7 +30,7 @@ def labelling(data):
     return sentiment_content_dict
 
 
-def generate_suggestions(api_key,data):
+def generate_suggestions(api_key,data,organisation):
 
     data = data.sample(n=300, random_state=42)
     openai.api_key=api_key
@@ -37,7 +38,7 @@ def generate_suggestions(api_key,data):
 
     for sentiment in dict_obt.keys():
         prompt =  f""" 
-As a business insights expert at Fino Payments Bank, you have been tasked with analyzing the {sentiment} feedback received from various social media platforms where Fino Payments Bank is active. The dataset contains comments categorized as {sentiment}.\
+As a business insights expert at {organisation}, you have been tasked with analyzing the {sentiment} feedback received from various social media platforms where Fino Payments Bank is active. The dataset contains comments categorized as {sentiment}.\
 
 Your objective is to thoroughly analyze the {sentiment} feedback by reading, memorizing, and interpreting all comments in this category. After analysis, you are required to present the top 5 insights derived from the sentiment. These insights should reflect the prevailing sentiment of the people and provide a deeper understanding of their feelings.\
 
