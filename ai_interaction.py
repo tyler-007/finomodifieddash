@@ -51,7 +51,7 @@ The top 5 insights will be compiled as bullet points and presented to the Direct
 Please ensure that your analysis is concise and focuses on the most significant findings. Limit your output to only 5 bullet points, each accompanied by its respective percentage stat.\
 
 """
-        response = get_completion(prompt, organization_name)
+        response = get_completion(prompt)
         list_response.append(response)
     return list_response
 
