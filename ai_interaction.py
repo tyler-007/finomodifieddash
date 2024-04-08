@@ -2,43 +2,43 @@ import pandas as pd
 import numpy as np
 import openai
 import matplotlib.pyplot as plt
+from app import organisation as organization_name
 
-
-def get_completion(prompt, model="gpt-3.5-turbo",temperature=0): # Andrew mentioned that the prompt/ completion paradigm is preferable for this class
+def get_completion(prompt, model="gpt-3.5-turbo", temperature=0):
+    # Andrew mentioned that the prompt/completion paradigm is preferable for this class
     messages = [
-        {"role": "system", "content": "You are a kind business insight employee with speciality in online media sentiment analysis, you work for a  Payments Bank - {organisation}"},
+        {"role": "system", "content": f"You are a kind business insight employee with speciality in online media sentiment analysis, you work in {organization_name} - an organization provided by the user."},
         {"role": "assistant", "content": prompt}
-    ]    
+    ]
     response = openai.ChatCompletion.create(
         model=model,
         messages=messages,
-        temperature=temperature, # this is the degree of randomness of the model's output
+        temperature=temperature,  # this is the degree of randomness of the model's output
     )
     return response.choices[0].message["content"]
 
-list_response=[]
+list_response = []
 
 def labelling(data):
     sentiment_content_dict = {}
     for index, row in data.iterrows():
         sentiment = row['Sentiment']
-        content = row['Content']  
+        content = row['Content']
         if sentiment in sentiment_content_dict:
             sentiment_content_dict[sentiment].append(content)
         else:
             sentiment_content_dict[sentiment] = [content]
     return sentiment_content_dict
 
-
-def generate_suggestions(api_key,data,organisation):
-
+def generate_suggestions(api_key, data, organization_name):
+    # Sample a subset of the data to analyze
     data = data.sample(n=300, random_state=42)
-    openai.api_key=api_key
-    dict_obt=labelling(data)
+    openai.api_key = api_key
+    dict_obt = labelling(data)
 
     for sentiment in dict_obt.keys():
-        prompt =  f""" 
-As a business insights expert at {organisation}, you have been tasked with analyzing the {sentiment} feedback received from various social media platforms where {organisation} is active. The dataset contains comments categorized as {sentiment}.\
+        prompt = f""" 
+As a business insights expert at {organization_name}, you have been tasked with analyzing the {sentiment} feedback received from various social media platforms where {organization_name} is active. The dataset contains comments categorized as {sentiment}.\
 
 Your objective is to thoroughly analyze the {sentiment} feedback by reading, memorizing, and interpreting all comments in this category. After analysis, you are required to present the top 5 insights derived from the sentiment. These insights should reflect the prevailing sentiment of the people and provide a deeper understanding of their feelings.\
 
@@ -49,16 +49,13 @@ The top 5 insights will be compiled as bullet points and presented to the Direct
 Please ensure that your analysis is concise and focuses on the most significant findings. Limit your output to only 5 bullet points, each accompanied by its respective percentage stat.\
 
 """
-        response = get_completion(prompt)
+        response = get_completion(prompt, organization_name)
         list_response.append(response)
     return list_response
 
-    
-    
-
-
-
-
-
-
-    
+# Example usage:
+# api_key = "your_openai_api_key_here"
+# data = pd.read_csv("path_to_your_dataset.csv")
+# organization_name = "User Input Organization"
+# suggestions = generate_suggestions(api_key, data, organization_name)
+# print(suggestions)
