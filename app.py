@@ -3,9 +3,12 @@ import streamlit as st
 from data_processing import process_csv_file
 from ai_interaction import generate_suggestions
 import pandas as pd
+import config
 
 def main():
     st.title("Fino Payments Bank Marketing Tool by Aayush Jain")
+    config.organisation = st.text_input("Enter your Orgs Name")
+
 
     # File Upload
     uploaded_file = st.file_uploader("Upload CSV file", type="csv")
@@ -13,7 +16,6 @@ def main():
     if uploaded_file is not None:
         # API Key Input
         api_key = st.text_input("Enter your API key")
-        organisation = st.text_input("Enter your Orgs Name")
 
         df = process_csv_file(uploaded_file)
 
@@ -46,10 +48,9 @@ def main():
                 st.image(fig)'''
 
         # Generate Suggestions
-        organisation= ''
 
         st.subheader("AI Suggestions")
-        suggestions = generate_suggestions(api_key, df, organisation)
+        suggestions = generate_suggestions(api_key, df)
         for suggestion in suggestions:
             st.text(suggestion)
 

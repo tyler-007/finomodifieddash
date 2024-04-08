@@ -2,7 +2,9 @@ import pandas as pd
 import numpy as np
 import openai
 import matplotlib.pyplot as plt
-from app import organisation as organization_name
+
+from config import organisation as organization_name
+# Rest of your code remains the same...
 
 def get_completion(prompt, model="gpt-3.5-turbo", temperature=0):
     # Andrew mentioned that the prompt/completion paradigm is preferable for this class
@@ -30,7 +32,7 @@ def labelling(data):
             sentiment_content_dict[sentiment] = [content]
     return sentiment_content_dict
 
-def generate_suggestions(api_key, data, organization_name):
+def generate_suggestions(api_key, data):
     # Sample a subset of the data to analyze
     data = data.sample(n=300, random_state=42)
     openai.api_key = api_key
