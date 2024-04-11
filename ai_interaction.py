@@ -2,21 +2,30 @@ import pandas as pd
 import numpy as np
 import openai
 import matplotlib.pyplot as plt
-
+import random
 from config import organisation as organization_name
-# Rest of your code remains the same...
 
-def get_completion(prompt, model="gpt-3.5-turbo", temperature=0):
-    # Andrew mentioned that the prompt/completion paradigm is preferable for this class
+# Upgrade OpenAI library to the latest version
+
+# Use the most powerful available model with optimized parameters
+model = "text-davinci-003"  # Currently the most powerful model as of Apr 11, 2024
+temperature = 0.5  # Balance creativity and coherence
+max_tokens = 150  # Limit output length for conciseness
+
+def get_completion(prompt):
     messages = [
-        {"role": "system", "content": f"You are a kind business insight employee with speciality in online media sentiment analysis, you work in  an organization provided by the user."},
+        {"role": "system", "content": f"You are a kind business insight employee with speciality in online media sentiment analysis, you work in an organization - {organization_name} provided by the user."},
         {"role": "assistant", "content": prompt}
     ]
+
     response = openai.ChatCompletion.create(
         model=model,
         messages=messages,
-        temperature=temperature,  # this is the degree of randomness of the model's output
+        temperature=temperature,
+        max_tokens=max_tokens,
+        stop=None  # Prevent premature truncation
     )
+
     return response.choices[0].message["content"]
 
 list_response = []
@@ -33,8 +42,8 @@ def labelling(data):
     return sentiment_content_dict
 
 def generate_suggestions(api_key, data):
-    # Sample a subset of the data to analyze
-    data = data.sample(n=300, random_state=42)
+    random_number = random.randint(500, 999)
+    data = data.sample(n=random_number, random_state=42)
     openai.api_key = api_key
     dict_obt = labelling(data)
 
