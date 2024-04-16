@@ -16,6 +16,7 @@ def main():
     if uploaded_file is not None:
         # API Key Input
         api_key = st.text_input("Enter your API key")
+        config.api_key=api_key
 
         df = process_csv_file(uploaded_file)
 
