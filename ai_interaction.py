@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import random
 from config import organisation as organization_name
 
-def get_completion(prompt, model="gpt-3.5-turbo", temperature=0):
+def get_completion(prompt, model="gpt-4-turbo", temperature=0):
       
     messages = [
         {"role": "system", "content": f"You are a kind business insight employee with speciality in online media sentiment analysis, you work in  an organization - {organization_name} provided by the user."},
