@@ -4,10 +4,9 @@ import openai
 import matplotlib.pyplot as plt
 import random
 from config import organisation as organization_name
-from config import api_key
 
 def get_completion(prompt, model="gpt-3.5-turbo", temperature=0):
-    openai.api_key = api_key  
+      
     messages = [
         {"role": "system", "content": f"You are a kind business insight employee with speciality in online media sentiment analysis, you work in  an organization - {organization_name} provided by the user."},
         {"role": "assistant", "content": prompt}
@@ -34,6 +33,7 @@ def labelling(data):
     return sentiment_content_dict
 
 def generate_suggestions(api_key, data):
+    openai.api_key=api_key
     data = data.sample(n=random.randint(500, 999), random_state=42)
     dict_obt = labelling(data)
     list_response = []
